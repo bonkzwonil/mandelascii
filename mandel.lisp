@@ -5,7 +5,7 @@
 
 (defparameter *threshold* (the fixnum 3))
 
-(defparameter *iterations* 100)
+(defparameter *iterations* 400)
 
 (defparameter *pxs* 1110)
 

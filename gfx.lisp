@@ -75,7 +75,12 @@
 							 (setf *viewport* (next-vp))
 							 (zpng:write-png png (format nil "/home/bonk/coden/mandelbrot/image~4,'0d.png" i))
 							 (setf colors (count-colors png 768 768)) ;FIXME: get width from png
-							 (format t ".")))))
+							 (format t ".")
+							 (force-output *standard-output*)
+							 (when (= 0 (mod i 40))
+								 (format t "  ~a~%" i))))))
+
+
 
 
 (defun make-movie ()
