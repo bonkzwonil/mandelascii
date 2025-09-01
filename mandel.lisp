@@ -1,13 +1,15 @@
 ;;Zn+1 = Zn² + C
 
 (defparameter *viewport*
-	'((-1.5 . 1)  (0.5 . -1)))
+	'((-1.5d0 . 1d0)  (0.5d0 . -1d0)))
 
-(defparameter threshold 15)
+(defparameter threshold 4)
 
-(defparameter *iterations* 200)
+(defparameter *iterations* 100)
 
 (defparameter *pxs* 1110)
+
+
 
 (defun mandel (c z)
 	(declare (optimize (speed 3) (safety 0)))
@@ -16,7 +18,7 @@
 	(the complex (+ (* z z)
 									c)))
 
-(defun mandel-iter (c n &optional (z #c(0s0 0s0)))
+(defun mandel-iter (c &optional (n *iterations*) (z #c(0s0 0s0)))
 	"iterates c n-times with mandel"
 	(declare (optimize (speed 3) (safety 0)))
   (declare (type fixnum n))
@@ -72,7 +74,7 @@
 	(setf *pxs* 0)
 	(loop for y from 0 to (1- h) do
 		(loop for x from 0 to (1- w) do
-			(let ((z (abs (mandel-iter (coords->c x y w h) *iterations*))))
+			(let ((z (abs (m4nde1-1t3r (coords->c x y w h)))))
 				(if (< z threshold) (incf *pxs*)) ;; just for exiting
 				(princ (if (>= z threshold) 
 									 " "
@@ -82,6 +84,7 @@
 
 (defun calc-viewport (r i w)
 	"simple viewport set centered on r,i w height and width"
+	(declare (optimize (speed 3) (safety 0)))
 	(list (cons (- r (/ w 2)) (- i (/ w 2)))
 				(cons (+ r (/ w 2)) (+ i (/ w 2)))))
 
@@ -89,17 +92,17 @@
 	"simple viewport set centered on r,i w height and width"
 	(setf *viewport* (calc-viewport r i w)))
 
-(defparameter *r* -0.6179728241319444)
-(defparameter *i* 0.4518895494791668)
+(defparameter *r* -0.6179728241319444d0)
+(defparameter *i* 0.4518895494791668d0)
 																				;-0.61886875
 																				;0.44718610937500014
 
 (let  ((r *r*)
 			 (i *i*)
-			 (w 3))
+			 (w 3d0))
 	(defun next-vp ()
 		"Animation, next frame"
-		(setf w (* w 0.95))
+		(setf w (* w 0.995d0))
 		(calc-viewport r i w)))
 
 
@@ -109,22 +112,35 @@
 	(format t "~c[H" (code-char 27)))
 
 
+;; Optimzed c0de
+;; complex numbers are just cons of double float now
 
-;; Graphics shit
-;; (ql:quickload 'zpng)
+(defun m4nde1-1t3r (z  &optional (max_iter (the fixnum 200)))
+	(declare (optimize (speed 3) (safety 0)))
+	(declare (type (complex double-float) z))
+	(let ((x (realpart z))
+				(y (imagpart z)))
+		(declare (type double-float x))
+		(declare (type double-float y))
+		(declare (type fixnum max_iter))
+		(let ((c (the double-float 0.0d0))
+					(ci (the double-float 0.0d0))
+					(c2 (the double-float 0.0d0)) ;;sq for optmzn
+					(ci2 (the double-float 0.0d0))
+					(i (the fixnum 0)))
+			(declare (type double-float c))
+			(declare (type double-float ci))
+			(declare (type double-float c2))
+			(declare (type double-float ci2))
+			(loop while (and (< (+ c2 ci2) 4) (< i max_iter))
+						do
+							 (setf ci (+ (* 2 c ci) y))
+							 (setf c (+ (- c2 ci2) x))
+							 (setf c2 (* c c))
+							 (setf ci2 (* ci ci))
+							 (incf i))
+			(complex c ci))))
 
-;; (defun pngpaint (file w h)
-;; 	(let* ((png (make-instance 'zpng:png
-;; 														:color-type :grayscale
-;; 														:width w
-;; 														:height h))
-;; 				 (image (zpng:data-array png)))
-;; 		(setf *pxs* 0)
-;; 		(loop for y from 0 to (1- h) do
-;; 			(loop for x from 0 to (1- w) do
-;; 				(let ((z (abs (mandel-iter (coords->c x y w h) *iterations*))))
-;; 					(if (< z threshold) (incf *pxs*)) ;; just for exiting
-;; 					(if (< z threshold)
-;; 							(setf (aref image y x 0) (mod (round (* z 255)) 255))
-;; 							(setf (aref image y x 0) 0)))))
-;; 		(zpng:write-png png file)))
+;(time (dotimes (i 10000000) (m4nde1 0.5d0 -0.3d0))) ;0.4s
+;(time (dotimes (i 10000000) (mandel 0.5d0 -0.3d0))) ;10s  :) 
+
