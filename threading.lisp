@@ -10,6 +10,9 @@
 
 
 (defun render-line (w y h &key (colorizer #'z->ascii2))
+	(declare (optimize speed)
+					 (type fixnum w y h)
+					 (type function colorizer))
 	(loop for x from 0 to (1- w)
 				collect
 				(multiple-value-bind (z i) (m4nde1-1t3r (coords->c x y w h) *iterations*)

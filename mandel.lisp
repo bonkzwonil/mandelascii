@@ -11,6 +11,8 @@
 
 (defparameter *interactive-p* t) ;; Interactive Mode: move with w,a,s,d , accelerate/decelerte with k,l
 
+(declaim (type fixnum *iterations* *threshold* *pxs*))
+
 ;;SOme interesting coords:
 
 (defparameter *mandel-travel-map*
@@ -122,6 +124,8 @@
 
 (defun z->ascii2 (z i &optional (iterations *iterations*))
 	"Asci<<farbe>> bauen (2. methode: nach iter"
+	(declare (type fixnum i iterations)
+					 (type (complex double-float) z))
 	(if (>= i iterations)
 			" "
 			(let* ((mina #\.)
@@ -218,6 +222,7 @@
 (defparameter *frames* 0)
 (defparameter *iters-done* 0)
 (defparameter *start-time* (get-universal-time))
+(declaim (type fixnum *frames* *iters-done* *start-time*))
 
 (defun get-stats (&key (reset))
 	(let ((stats (list :fps (/ *frames* (max 1 (- (get-universal-time)  *start-time*)))
@@ -230,7 +235,7 @@
 		stats))
 
 (defun print-stats (stats)
-	(format nil "~,2f fps, ~,2f ips" (getf stats :fps) (getf stats :ips)))
+	(format nil "~,2f fps, ~,'0:dk ips" (getf stats :fps) (round (/ (getf stats :ips) 1000))))
 			
 			
 								 

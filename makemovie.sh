@@ -5,7 +5,7 @@ STARTP=$1
 ITER=$2
 
 echo rendering movie....
-sbcl --non-interactive --load mandel.fasl --load threading.fasl --load gfx.lisp \
+sbcl --non-interactive --load mandel.fasl --load threading.fasl --load gfx.fasl \
 		 --eval "(setf *iterations* ${ITER:=400})" \
 		 --eval "(init-travel '${STARTP:=sun})" --eval "(setf *VIEWPORT* (next-vp))" --eval  "(MAKE-MOVIE-MP)"
 

@@ -46,6 +46,8 @@
 			png)))
 
 (defun count-colors (png w h)
+	(declare (type fixnum w h))
+	(declare (optimize speed))
 	(let* ((image (zpng:data-array png))
 				 (colors (make-hash-table)))
 		(loop for y from 0 to (1- h) do
@@ -84,7 +86,11 @@
 
 ;;MULTICOLOR
 
-(defun iz->truecolor (z i &optional (iterations *iterations*)) 
+(defun iz->truecolor (z i &optional (iterations *iterations*))
+	(declare (optimize speed)
+					 (type fixnum i iterations)
+					 (type (complex double-float) z))
+	(incf *iters-done* i) ;;location abused a bit
 	(if (< i iterations)
 			(list
 			 ;(mod (round (* (/ i iterations) 255)) 255)
