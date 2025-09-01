@@ -183,13 +183,13 @@ Needs more work. Current performance is acceptable, but further SIMD(?) (MMX/SSE
 # Conclusion
 Common Lisp once again proves itself as a true high-level language that combines expressive power with strong computational performance. Unlike C, which demands boilerplate code, manual memory handling, and repeated compilation, Lisp provides an interactive REPL and concise abstractions that enable rapid iteration and much faster development cycles.
 
-At the same time, careful use of declarations, efficient compilation, and parallel execution allow compute-intensive workloads to run at performance levels close to optimized C. This blend of high productivity and near-C speed shows that Common Lisp remains a practical and powerful choice for tasks requiring both rapid development and serious numerical performance.
+At the same time, careful use of declarations, efficient compilation, and parallel execution allow compute-intensive workloads to reach — and sometimes rival — optimized C. This blend of high productivity and serious performance shows that Common Lisp is the practical and powerful choice for tasks requiring both rapid, fluid development and demanding numerical computation.
 
 In short:
-Common Lisp isn’t just elegant — it’s fast, practical, and fun.
+Common Lisp isn’t just elegant — it’s *fast*, *practical*, and *fun*.
 If you still think Lisp is “too slow” for numeric or parallel workloads, this project is living proof to the contrary.
 
-Lisp is geil ;)
+*Lisp is geil ;)*
 
 ```
 .............................///////////////////////////////////////////............................
