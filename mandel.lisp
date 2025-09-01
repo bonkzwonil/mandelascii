@@ -3,13 +3,13 @@
 (defparameter *viewport*
 	'((-1.5d0 . 1d0)  (0.5d0 . -1d0)))
 
-(defparameter threshold 4)
+(defparameter threshold 3.0d0)
 
 (defparameter *iterations* 100)
 
 (defparameter *pxs* 1110)
 
-
+(defparameter *interactive-p* t) ;; Interactive Mode: move with w,a,s,d , accelerate/decelerte with k,l
 
 (defun mandel (c z)
 	(declare (optimize (speed 3) (safety 0)))
@@ -79,7 +79,11 @@
 				(princ (if (>= z threshold) 
 									 " "
 									 (z->ascii z)))))
-		(princ #\Newline)))
+		(princ #\Newline))
+	(home)
+	(princ w))
+	
+	
 	
 
 (defun calc-viewport (r i w)
@@ -94,17 +98,28 @@
 
 (defparameter *r* -0.6179728241319444d0)
 (defparameter *i* 0.4518895494791668d0)
+
+;(setf *r*
+;			0.001643721971153d0)
+;(setf *i* 0.82246763329887d0)
 																				;-0.61886875
 																				;0.44718610937500014
 
 (let  ((r *r*)
 			 (i *i*)
-			 (w 3d0))
+			 (w 3d0)
+			 (dr 0)
+			 (di 0))
 	(defun next-vp ()
 		"Animation, next frame"
 		(setf w (* w 0.995d0))
-		(calc-viewport r i w)))
-
+		(incf i di)
+		(incf r dr)
+		(calc-viewport r i w))
+	;;for interactive mode
+	(defun move (drp dip) ;in percent of w
+		(incf dr (* (/ w 100.0d0) drp))
+		(incf di (* (/ w 100.0d0) dip))))
 
 (defun cls ()
 	(format t "~c[2J" (code-char 27)))
@@ -141,6 +156,16 @@
 							 (incf i))
 			(complex c ci))))
 
-;(time (dotimes (i 10000000) (m4nde1 0.5d0 -0.3d0))) ;0.4s
-;(time (dotimes (i 10000000) (mandel 0.5d0 -0.3d0))) ;10s  :) 
+;;Benchmarking
+;(time (dotimes (i 1000000) (m4nde1-1t3r #c(0.5d0 -0.3d0)))) ;0.4s :)
+;(time (dotimes (i 1000000) (mandel-iter #c(0.5d0 -0.3d0)))) ;10s   
 
+
+
+;;; INteractive Mode
+(defun read-cmd ()
+	(let ((c (read-char-no-hang)))
+		(when c
+			(cond
+				((equal #\a c) (move -1 0))))))
+						
