@@ -1,5 +1,5 @@
 ;;Zn+1 = Zn² + C
-
+(declaim (optimize speed))
 (defparameter *viewport*
 	'((-2.0d0 . 1.2d0)  (1d0 . -1.2d0)))
 
@@ -120,7 +120,7 @@
 						maxa
 						(code-char (round (+ (char-code mina) (* z w) )))))))
 
-(defun z->ascii2 (i &optional (iterations *iterations*))
+(defun z->ascii2 (z i &optional (iterations *iterations*))
 	"Asci<<farbe>> bauen (2. methode: nach iter"
 	(if (>= i iterations)
 			" "
@@ -140,7 +140,7 @@
 		(loop for x from 0 to (1- w) do
 			(multiple-value-bind (z i) (m4nde1-1t3r (coords->c x y w h))
 				(if (< i *iterations*) (incf *pxs*)) ;; just for exiting
-				(princ 	(z->ascii2 i))))
+				(princ 	(z->ascii2 z i))))
 		(princ #\Newline))
 	(home))
 
@@ -161,24 +161,25 @@
 ;;
 ;; Optimzed c0de
 ;; complex numbers are just cons of double float, all declared
+(declaim (ftype (function ((complex double-float) &optional fixnum) ;input
+													(values (complex double-float) fixnum)) ;output
+								m4nde1-1t3r))
+(declaim (inline m4nde1-1t3r)) ;;could yield 10% gain
 
 (defun m4nde1-1t3r (z  &optional (max_iter *iterations*))
-	(declare (optimize (speed 3) (safety 0)))
+	(declare (optimize speed (space 0)))  ;; benchmark no difference to (speed 3) (safety 0)
 	(declare (type (complex double-float) z))
 	(let ((x (realpart z))
 				(y (imagpart z)))
-		(declare (type double-float x))
-		(declare (type double-float y))
-		(declare (type fixnum max_iter))
-		(let ((c (the double-float 0.0d0))
-					(ci (the double-float 0.0d0))
-					(c2 (the double-float 0.0d0)) ;;sq for optmzn
-					(ci2 (the double-float 0.0d0))
-					(i (the fixnum 0)))
-			(declare (type double-float c))
-			(declare (type double-float ci))
-			(declare (type double-float c2))
-			(declare (type double-float ci2))
+		(declare (type double-float x y)
+						 (type fixnum max_iter))
+		(let ((c 0.0d0)
+					(ci 0.0d0)
+					(c2 0.0d0) ;;sq for optmzn
+					(ci2 0.0d0)
+					(i 0))
+			(declare (type double-float c ci c2 ci2)
+							 (type fixnum i))
 			(loop while (and (< (+ c2 ci2) 4) (< i max_iter))
 						do
 							 (setf ci (+ (* 2 c ci) y))
@@ -186,8 +187,9 @@
 							 (setf c2 (* c c))
 							 (setf ci2 (* ci ci))
 							 (incf i))
-			(values (complex c ci)
-							i))))
+			(the (values (complex double-float) fixnum)  ;; a bit confusing: first values is the typedecl from 'the'!
+					 (values (complex c ci)
+							i)))))
 
 ;;Benchmarking
 ;(time (dotimes (i 1000000) (m4nde1-1t3r #c(0.5d0 -0.3d0)))) ;0.4s :)
@@ -206,4 +208,44 @@
 				((equal #\s c) (move 0 0.1))
 				((equal #\x c) (reset-move))
 				((equal #\q c) (quit))))))
-						
+
+
+
+;; STats
+
+;;; Lets also have some stats
+
+(defparameter *frames* 0)
+(defparameter *iters-done* 0)
+(defparameter *start-time* (get-universal-time))
+
+(defun get-stats (&key (reset))
+	(let ((stats (list :fps (/ *frames* (max 1 (- (get-universal-time)  *start-time*)))
+										 :ips (/ *iters-done* (max 1 (- (get-universal-time)  *start-time*)))
+										 :frames *frames*)))
+		(when reset
+			(setf *frames* 0)
+			(setf *iters-done* 0)
+			(setf *start-time* (get-universal-time)))
+		stats))
+
+(defun print-stats (stats)
+	(format nil "~,2f fps, ~,2f ips" (getf stats :fps) (getf stats :ips)))
+			
+			
+								 
+
+
+;; Benchmark
+;;10,710,515,593 processor cycles
+;;  0 bytes consed (!)
+;;;
+;; Around ~7 cycles per iter. not so bad.
+
+(defun benchmark (&optional (n 1000000))
+	(declare (type fixnum n))
+	(time (dotimes (i n)
+					(m4nde1-1t3r #c(0.1d0 -0.5d0) 1500))))
+
+
+;;(sb-sprof:with-profiling (:max-samples 1000 :report :flat :loop t :show-progress t) (BENCHMARK))

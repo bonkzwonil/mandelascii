@@ -14,13 +14,9 @@
 				collect
 				(multiple-value-bind (z i) (m4nde1-1t3r (coords->c x y w h) *iterations*)
 					(if (< i *iterations*) (incf *pxs*)) ;; just for exiting
-					(funcall colorizer i))))
+					(funcall colorizer z i))))
 			
 
-(defun i->greyscale (i &optional (iterations *iterations*))
-	(if (< i iterations)
-			(mod (round (* (/ i iterations) 255)) 255)
-			0))
 
 
 
