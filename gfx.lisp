@@ -33,6 +33,49 @@
 							(setf (aref image y x 0) 0)))))
 		(zpng:write-png png file)))
 
+(defun render-img-mp (w h)
+	(let* ((png (make-instance 'zpng:png
+														 :color-type :grayscale
+														 :width w
+														 :height h))
+				 (image (zpng:data-array png)))
+
+		(let* ((funs (segment-iter #'(lambda (y)
+																	(loop for x from 0 by 1 for px in (render-line w y h :colorizer #'i->greyscale)
+																				DO
+																					 (setf (aref image y x 0) px)))
+										h 12))
+			
+					 (threads (mapcar #'sb-thread:make-thread
+														funs)))
+			
+			;;join threads
+			(mapcar #'sb-thread:join-thread threads)
+			;;image array now built
+			png)))
+
+(defun count-colors (png w h)
+	(let* ((image (zpng:data-array png))
+				 (colors (make-hash-table)))
+		(loop for y from 0 to (1- h) do
+			(loop for x from 0 to (1- w) DO
+				(setf (gethash (aref image x y 0) colors) t)))
+		(hash-table-count colors)))
+		
+(defun pngpaint-mp (file w h)
+	(zpng:write-png (render-img-mp w h) file))
+	
+
+(defun make-movie-mp ()
+	(let ((colors 2))
+		(loop for i from 0 by 1
+					while (and (> *pxs* 0) (> colors 1))
+					do
+						 (let ((png (render-img-mp 768 768)))
+							 (setf *viewport* (next-vp))
+							 (zpng:write-png png (format nil "/home/bonk/coden/mandelbrot/image~4,'0d.png" i))
+							 (setf colors (count-colors png 768 768)) ;FIXME: get width from png
+							 (format t ".")))))
 
 
 (defun make-movie ()

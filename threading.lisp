@@ -45,33 +45,3 @@
 
 ;(segment-iter #'(lambda (y) (render-line 100 y 16)) i 16)
 
-;; (defun render-img-mp (w h)
-;; 	(let* ((png (make-instance 'zpng:png
-;; 														 :color-type :grayscale
-;; 														 :width w
-;; 														 :height h))
-;; 				 (image (zpng:data-array png)))
-
-;; 		(let* ((funs (segment-iter #'(lambda (y)
-;; 																	(loop for x from 0 by 1 for px in (render-line w y h)
-;; 																				DO
-;; 																					 (setf (aref image y x 0) px)))
-;; 										i h 12))
-			
-;; 					 (threads (mapcar #'sb-thread:make-thread
-;; 														funs)))
-			
-;; 			;;join threads
-;; 			(mapcar #'sb-thread:join-thread threads)
-;; 			;;image array now built
-;; 			png)))
-		
-;; (defun pngpaint-mp (file w h)
-;; 	(zpng:write-png (render-img-mp w h) file))
-	
-
-;; (defun make-movie-mp ()
-;; 	(loop for i from 0 by 1 while (> *pxs* 0)
-;; 				do (setf *viewport* (next-vp))
-;; 					 (pngpaint-mp (format nil "/home/bonk/coden/mandelbrot/image~4,'0d.png" i) 768 768)
-;; 					 (format t ".")))
