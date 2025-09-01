@@ -145,7 +145,12 @@
 		(starfish -0.374004139 -0.659792175)
 		(trunks 0.001643721971153d0 0.82246763329887d0)
 		(julia -1.768778833d0 0.001738996d0)
-		(juliazoom -1.768778832d0 0.001738917)))
+		(juliazoom -1.768778832d0 0.001738917)
+		(flower -1.999985882d0 0d0)
+		(home 0d0 0d0)
+		(seahorse -0.743517833d0 0.127094578d0)
+		(sun -0.776592024d0 0.136640779d0)
+		(tendrils -0.226266648d0 -1.11617444d0)))
 
 (defun init-travel (name &optional (speed 0.95d0))
 	(let ((coords (assoc name *mandel-travel-map*)))
