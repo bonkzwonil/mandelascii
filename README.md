@@ -23,13 +23,22 @@
 ```
 
 ## Usage
-start.sh [startpoint] [iter] [threads]
+start.sh [startpoint] [iter] [delay]
 
 This compiles and starts the ascii zoomer
 
 - startpoint -  a startpoint from the list of nice locations (below), or `list` for a list
 - iter       -  max iterations (Default 1000)
-- threads    -  number of Threads. (Default 10)
+- delay      -  delay msec per frame (if running way too fast, default is 0)
+
+Default number of rendering Threads is 12.
+
+Stops as soon as the whole screen is of the same ,,color'' 
+
+Can also be exited any time by hitting `q` and enter
+
+
+On a fast machine, try something like `start.sh sun 300 20`
 
 
 ## nice Startpoints

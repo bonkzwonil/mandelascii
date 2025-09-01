@@ -20,9 +20,6 @@
 					(funcall colorizer z i))))
 			
 
-
-
-
 (defun asciipaint-mp (w h)
 	(setf *pxs* 0)
 	(incf *frames*)
@@ -35,13 +32,27 @@
 													funs)))
 		;;join threads
 		(mapcar #'sb-thread:join-thread threads)
+		(home)
 		(loop for line across linebuf DO
 			(mapcar #'princ
 							line)
-			(princ #\Newline)))
-	(home))
-
+			(princ #\Newline))
+		(when (> *delay* 0)
+			(sleep (/ *delay* 1000)))
+		;;return linebuf, as we might need it (for counting colors etc
+		linebuf))
 
 
 ;(segment-iter #'(lambda (y) (render-line 100 y 16)) i 16)
 
+
+(defun count-colors-ascii (linebuf) ;;FIXME: shit implementation!
+	(declare (optimize speed)
+					 (type (simple-vector) linebuf))
+	(let*  ((colors (make-hash-table)))
+		(loop for line across linebuf do
+					(loop for char in line do
+						(setf (gethash char colors) t)))
+		(hash-table-count colors)))
+
+	

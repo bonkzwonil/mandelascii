@@ -59,15 +59,15 @@
 	(zpng:write-png (render-img-mp w h) file))
 	
 
-(defun make-movie-mp ()
+(defun make-movie-mp (w h)
 	(let ((colors 2))
 		(loop for i from 0 by 1
 					while (and (> *pxs* 0) (> colors 1))
 					do
-						 (let ((png (render-img-tc--mp 768 768)))
+						 (let ((png (render-img-tc--mp w h)))
 							 (setf *viewport* (next-vp))
 							 (zpng:write-png png (format nil "/home/bonk/coden/mandelbrot/image~4,'0d.png" i))
-							 (setf colors (count-colors png 768 768)) ;FIXME: get width from png
+							 (setf colors (count-colors png w h)) ;FIXME: get width from png
 							 (format t ".")
 							 (force-output *standard-output*)
 							 (incf *frames*)

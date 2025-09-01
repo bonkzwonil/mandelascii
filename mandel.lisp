@@ -5,13 +5,15 @@
 
 (defparameter *threshold* (the fixnum 3))
 
-(defparameter *iterations* 400)
+(defparameter *iterations* 300)
 
 (defparameter *pxs* 1110)
 
 (defparameter *interactive-p* t) ;; Interactive Mode: move with w,a,s,d , accelerate/decelerte with k,l
 
-(declaim (type fixnum *iterations* *threshold* *pxs*))
+(defparameter *delay* 0)
+
+(declaim (type fixnum *iterations* *threshold* *pxs* *delay*))
 
 ;;SOme interesting coords:
 
@@ -91,6 +93,8 @@
 		(defun move (drp dip) ;in percent of w
 			(incf dr (* (/ w 100.0d0) drp))
 			(incf di (* (/ w 100.0d0) dip)))
+		(defun current-w ()
+			w)
 		(defun reset-move ()
 			(setf dr 0d0)
 			(setf di 0d0))))
