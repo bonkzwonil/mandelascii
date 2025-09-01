@@ -70,15 +70,25 @@
 				(if (> z 1)
 						maxa
 						(code-char (round (+ (char-code mina) (* z w) )))))))
-		
+
+(defun z->ascii2 (i &optional (iterations *iterations*))
+	"Asci<<farbe>> bauen (2. methode: nach iter"
+	(if (>= i iterations)
+			" "
+			(let* ((mina #\.)
+						 (maxa #\z)
+						 (w (- (char-code maxa) (char-code mina))))
+				(if maxa
+						(code-char (round (+ (char-code mina) (* (/ i *iterations*) w))))))))
+
 
 (defun asciipaint (w h)
 	(setf *pxs* 0)
 	(loop for y from 0 to (1- h) do
 		(loop for x from 0 to (1- w) do
-			(let ((z (abs (m4nde1-1t3r (coords->c x y w h)))))
-				(if (< z threshold) (incf *pxs*)) ;; just for exiting
-				(princ 	(z->ascii z))))
+			(multiple-value-bind (z i) (m4nde1-1t3r (coords->c x y w h))
+				(if (< i *iterations*) (incf *pxs*)) ;; just for exiting
+				(princ 	(z->ascii2 i))))
 		(princ #\Newline))
 	(home))
 	
@@ -148,7 +158,7 @@
 
 
 ;; Optimzed c0de
-;; complex numbers are just cons of double float now
+;; complex numbers are just cons of double float, all declared
 
 (defun m4nde1-1t3r (z  &optional (max_iter *iterations*))
 	(declare (optimize (speed 3) (safety 0)))
@@ -174,7 +184,8 @@
 							 (setf c2 (* c c))
 							 (setf ci2 (* ci ci))
 							 (incf i))
-			(complex c ci))))
+			(values (complex c ci)
+							i))))
 
 ;;Benchmarking
 ;(time (dotimes (i 1000000) (m4nde1-1t3r #c(0.5d0 -0.3d0)))) ;0.4s :)
