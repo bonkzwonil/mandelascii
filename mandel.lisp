@@ -1,7 +1,7 @@
 ;;Zn+1 = Zn² + C
 
 (defparameter *viewport*
-	'((-1.5d0 . 1d0)  (0.5d0 . -1d0)))
+	'((-2.0d0 . 1.2d0)  (1d0 . -1.2d0)))
 
 (defparameter threshold 3.0d0)
 
@@ -62,12 +62,14 @@
 
 (defun z->ascii (z &optional (threshold threshold))
 	"Asci<<farbe>> bauen"
-	(let* ((mina #\.)
-				 (maxa #\z)
-				 (w (- (char-code maxa) (char-code mina))))
-		(if (> z 1)
-				maxa
-				(code-char (round (+ (char-code mina) (* z w) ))))))
+	(if (>= z threshold)
+			" "
+			(let* ((mina #\.)
+						 (maxa #\z)
+						 (w (- (char-code maxa) (char-code mina))))
+				(if (> z 1)
+						maxa
+						(code-char (round (+ (char-code mina) (* z w) )))))))
 		
 
 (defun asciipaint (w h)
@@ -76,13 +78,9 @@
 		(loop for x from 0 to (1- w) do
 			(let ((z (abs (m4nde1-1t3r (coords->c x y w h)))))
 				(if (< z threshold) (incf *pxs*)) ;; just for exiting
-				(princ (if (>= z threshold) 
-									 " "
-									 (z->ascii z)))))
+				(princ 	(z->ascii z))))
 		(princ #\Newline))
-	(home)
-	(princ w))
-	
+	(home))
 	
 	
 
@@ -99,32 +97,49 @@
 	"simple viewport set centered on r,i w height and width"
 	(setf *viewport* (calc-viewport r i w)))
 
-(defparameter *r* -0.6179728241319444d0)
-(defparameter *i* 0.4518895494791668d0)
+;(defparameter *r* -0.6179728241319444d0)
+;(defparameter *i* 0.4518895494791668d0)
 
-;(setf *r* 0.001643721971153d0)
-;(setf *i* 0.82246763329887d0)
+;(defparameter *r* 0.001643721971153d0)
+;(defparameter *i* 0.82246763329887d0)
 																				;-0.61886875
 																				;0.44718610937500014
 
-(let  ((r *r*)
-			 (i *i*)
-			 (w 3d0)
-			 (dr 0d0)
-			 (di 0d0))
-	(defun next-vp ()
-		"Animation, next frame"
-		(setf w (* w 0.995d0))
-		(incf i di)
-		(incf r dr)
-		(calc-viewport r i w))
-	;;for interactive mode
-	(defun move (drp dip) ;in percent of w
-		(incf dr (* (/ w 100.0d0) drp))
-		(incf di (* (/ w 100.0d0) dip)))
-	(defun reset-move ()
-		(setf dr 0d0)
-		(setf di 0d0)))
+(defun init-coords (r i &optional (speed 0.95d0))
+	"sets coordinate system on center point and builds transform functions"
+	(let  ((w 3d0)
+				 (dr 0d0)
+				 (di 0d0))
+		(defun next-vp ()
+			"Animation, next frame"
+			(setf w (* w speed))
+			(incf i di)
+			(incf r dr)
+			(calc-viewport r i w))
+		;;for interactive mode
+		(defun move (drp dip) ;in percent of w
+			(incf dr (* (/ w 100.0d0) drp))
+			(incf di (* (/ w 100.0d0) dip)))
+		(defun reset-move ()
+			(setf dr 0d0)
+			(setf di 0d0))))
+
+
+;;SOme interesting coords:
+
+(defparameter *mandel-travel-map*
+	'((spirals -0.343806077d0 -0.611278040)
+		(starfish -0.374004139 -0.659792175)
+		(trunks 0.001643721971153d0 0.82246763329887d0)
+		(julia -1.768778833d0 0.001738996d0)
+		(juliazoom -1.768778832d0 0.001738917)))
+
+(defun init-travel (name &optional (speed 0.95d0))
+	(let ((coords (assoc name *mandel-travel-map*)))
+		(when coords
+			(init-coords (cadr coords) (caddr coords) speed))))
+
+	
 
 (defun cls ()
 	(format t "~c[2J" (code-char 27)))
@@ -135,7 +150,7 @@
 ;; Optimzed c0de
 ;; complex numbers are just cons of double float now
 
-(defun m4nde1-1t3r (z  &optional (max_iter (the fixnum 200)))
+(defun m4nde1-1t3r (z  &optional (max_iter *iterations*))
 	(declare (optimize (speed 3) (safety 0)))
 	(declare (type (complex double-float) z))
 	(let ((x (realpart z))
