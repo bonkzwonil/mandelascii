@@ -23,23 +23,28 @@
 ```
 
 ## Usage
+```
 start.sh [startpoint] [iter] [delay]
+```
 
-This compiles and starts the ascii zoomer
+This compiles and launches the ASCII zoomer.
 
-- startpoint -  a startpoint from the list of nice locations (below), or `list` for a list
-- iter       -  max iterations (Default 1000)
-- delay      -  delay msec per frame (if running way too fast, default is 0)
+startpoint – one of the predefined locations (see below), or list to display them
 
-Default number of rendering Threads is 12.
+iter – maximum iterations (default: 1000)
 
-Stops as soon as the whole screen is of the same ,,color'' 
+delay – delay in ms per frame (default: 0; use >0 if it runs too fast)
 
-Can also be exited any time by hitting `q` and enter
+The default number of rendering threads is 12.
 
+Rendering stops automatically when the entire screen is filled with the same “color.”
+You can also exit at any time by pressing q + Enter.
 
-On a fast machine, try something like `start.sh sun 300 20`
+On a fast machine, try:
 
+```
+start.sh sun 300 20
+```
 
 ## nice Startpoints
 
@@ -54,13 +59,15 @@ On a fast machine, try something like `start.sh sun 300 20`
 - tendrils
 
 ## Optimizations
-Some optimized algorithm, with a lot of `(declares)` .
-core calc loop is with double-precision floats instead of complex's.
-This increases the speed by factor ~20.
-Another factor of 10 is achieved by parallel rendering with 10 Threads (on hardware with cores>=10)
+Heavy use of (declare) for compiler hints.
+
+Core calculation loop uses double-precision floats instead of Lisp complex numbers.
+→ ~20× speedup.
+
+Parallel rendering with 10+ threads adds another ~10× boost (on hardware with ≥10 cores).
 
 ## TODO
-Current Multiprocessing is starting n Threads per frame and joining them, which is working surprisingly good in sbcl, but could maybe be optimized longer lifecycle workers.
+Currently, multiprocessing spawns n threads per frame and joins them again. Surprisingly efficient in SBCL, but could be improved with longer-lived worker threads.
 
 ## GFX
 create a video with mencoder like this:
@@ -72,18 +79,18 @@ Rendering will stop as soon as there is only one color in the whole image or aft
 `mencoder mf://image*.png -mf fps=25 -ovc x264 -oac copy -o output.avi`
 
 
-# Optimize
+# Performance & Optimization
 
 ## Benchmarks
-Currently we are at ~7 cpu cycles per iteration, which is quite acceptable. (depends on workload and pipelining)
+Currently around *~7 cpu cycles per iteration*, which is quite acceptable. (depends on workload and pipelining)
 
-### Comparison
-This is really pretty fast.
+### Language Comparison
 
 #### Python
-for comparison, running the same algorithm in vanilla python3 tooks ridiculous *235 seconds*, compared to 7.1 seconds for the Lisp version. (thats 33 times slower).
+Running the same algorithm in plain Python 3 takes a ridiculous 235 seconds, compared to 7.1 seconds in Lisp.
+That’s ~33× slower.
 
-Ok python is maybe the slowest imaginable language in existance known to mankind, so not the best comparison, but still surprisingly shitty performance from python.
+Python might not be the fairest benchmark (being one of the slowest mainstream languages ever), but the performance gap is still striking.
 
 #### C
 - Its 35% faster than C, without cflags,
@@ -92,20 +99,21 @@ Ok python is maybe the slowest imaginable language in existance known to mankind
 
 - almost 20% slower than C with `-O4` optimizations (70 to 59 seconds for 10 Million iterations)
 
-Disassembly looks pretty similar. Maybe running the benchmark function for lisp inside of slime inside of emacs had impact as well, but should be neglectible
+Disassembly looks quite similar. Running Lisp inside SLIME/Emacs may have added a negligible overhead.
 
-## For ASCII we are pretty much done
+## ASCII Rendering
+~600 fps with default settings in a standard terminal. -> Should be enough :)
 
-Currently rendering at 600fps in standard settings and normal terminal
-	and still getting 60fps in a 612x160 terminal (smallest font possible here with gnome-terminal and hack)
+Still achieves 60 fps even in a 612×160 terminal (smallest font here with Gnome Terminal + Hack font).
 	
 	
-	
-## RGB Video rendering could need some more	
+## RGB Video Rendering
 
-### Disassembly for further optimizations
+Needs more work. Current performance is acceptable, but further SIMD(?) (MMX/SSE/AVX) optimizations may help.
 
- - MMX : check
+### Disassembly for further optimizations (or the curious)
+
+ - SSE : check
 
 ```
 ; disassembly for M4NDE1-1T3R
@@ -172,7 +180,7 @@ Currently rendering at 600fps in standard settings and normal terminal
 
 ```
 
-
+# 
 
 ```
 .............................///////////////////////////////////////////............................
