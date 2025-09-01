@@ -1,4 +1,4 @@
-# Realtime ascii mandelbrot zoomer in Common Lisp (sbcl)
+# Realtime 64bit ascii mandelbrot zoomer in Common Lisp (sbcl)
 ```
 .............../////////////////////..............
 ...........///////////////////0/////////..........
@@ -67,6 +67,13 @@ Rendering will stop as soon as there is only one color in the whole image or aft
 
 ## Benchmarks
 Currently we are at ~7 cpu cycles per iteration, which is quite acceptable. (depends on workload and pipelining)
+
+## For ASCII we are pretty much done
+
+Currently rendering at 600fps in standard settings and normal terminal
+	and still getting 60fps in a 612x160 terminal (smallest font possible here with gnome-terminal and hack)
+	
+## RGB Video rendering could need some more	
 
 ### Disassembly for further optimizations
 

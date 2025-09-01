@@ -17,7 +17,10 @@ sbcl --non-interactive --eval "(compile-file #p\"mandel.lisp\")" \
 		 --load threading.fasl \
 		 --eval "(setf *iterations* ${ITER:=1000})" \
 		 --eval "(init-travel '${STARTP:=trunks} 0.95d0)" \
-		 --eval "(loop while (> *pxs* 0) do (setf *viewport* (next-vp)) (asciipaint-mp $(( ${COLS} - 1)) $(( ${LNS} -1 ))) (read-cmd))"
+		 --eval "(loop while (> *pxs* 0) do (setf *viewport* (next-vp)) (asciipaint-mp $(( ${COLS} - 1)) $(( ${LNS} -1 ))) (read-cmd))" \
+		 --eval "(format t \"Rendered ~,'0:dk frames.  ~,2f fps~%~%\"  *frames* (getf (get-stats) :fps))"
+
+
 
 
 

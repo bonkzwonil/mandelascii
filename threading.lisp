@@ -25,6 +25,7 @@
 
 (defun asciipaint-mp (w h)
 	(setf *pxs* 0)
+	(incf *frames*)
 	(let* ((linebuf (make-array h))
 				 (funs (segment-iter #'(lambda (y)
 																 (setf (aref linebuf y) (render-line w y h)))
