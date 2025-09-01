@@ -10,7 +10,7 @@
 .///////////000010//00=                 40////////
 .///////////01 4   603                  3/////////
 ./////////600                           0/////////
-.                     asciimandel!    10//////////
+.                     mandelascii!    10//////////
 ./////////600                           0/////////
 .///////////01 4   603                  3/////////
 .///////////000010//00=                 40////////
@@ -93,13 +93,13 @@ That’s ~33× slower.
 Python might not be the fairest benchmark (being one of the slowest mainstream languages ever), but the performance gap is still striking.
 
 #### C
-- Its 35% faster than C, without cflags,
+- 25% faster than C, without cflags
 
 - On par with `-O`.
 
-- almost 20% slower than C with `-O4` optimizations (70 to 59 seconds for 10 Million iterations)
+- almost 20% slower than C with `-O4` optimizations (70 to 59 seconds for 15 Billion iterations)
 
-Disassembly looks quite similar. Running Lisp inside SLIME/Emacs may have added a negligible overhead.
+Disassembly looks quite similar.  Running Lisp inside SLIME/Emacs may have added a negligible overhead.
 
 ## ASCII Rendering
 ~600 fps with default settings in a standard terminal. -> Should be enough :)
