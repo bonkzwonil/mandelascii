@@ -50,7 +50,7 @@
 				 (xn (/ (car vs) w))
 				 (yn (/ (cdr vs) h)))
 	(complex (+ (* xn x) (caar *viewport*))
-					 (+ (* yn y) (caadr *viewport*)))))
+					 (+ (* yn y) (cdar *viewport*)))))
 
 
 ;; (defun z->ascii (z &optional (threshold threshold))
@@ -89,8 +89,11 @@
 (defun calc-viewport (r i w)
 	"simple viewport set centered on r,i w height and width"
 	(declare (optimize (speed 3) (safety 0)))
-	(list (cons (- r (/ w 2)) (- i (/ w 2)))
-				(cons (+ r (/ w 2)) (+ i (/ w 2)))))
+  (declare (type double-float r))
+  (declare (type double-float i))
+  (declare (type double-float w))
+	(list (cons (- r (/ w 2.0d0)) (- i (/ w 2.0d0)))
+				(cons (+ r (/ w 2.0d0)) (+ i (/ w 2.0d0)))))
 
 (defun set-viewport (r i w)
 	"simple viewport set centered on r,i w height and width"
@@ -99,8 +102,7 @@
 (defparameter *r* -0.6179728241319444d0)
 (defparameter *i* 0.4518895494791668d0)
 
-;(setf *r*
-;			0.001643721971153d0)
+;(setf *r* 0.001643721971153d0)
 ;(setf *i* 0.82246763329887d0)
 																				;-0.61886875
 																				;0.44718610937500014
@@ -108,8 +110,8 @@
 (let  ((r *r*)
 			 (i *i*)
 			 (w 3d0)
-			 (dr 0)
-			 (di 0))
+			 (dr 0d0)
+			 (di 0d0))
 	(defun next-vp ()
 		"Animation, next frame"
 		(setf w (* w 0.995d0))
@@ -119,7 +121,10 @@
 	;;for interactive mode
 	(defun move (drp dip) ;in percent of w
 		(incf dr (* (/ w 100.0d0) drp))
-		(incf di (* (/ w 100.0d0) dip))))
+		(incf di (* (/ w 100.0d0) dip)))
+	(defun reset-move ()
+		(setf dr 0d0)
+		(setf di 0d0)))
 
 (defun cls ()
 	(format t "~c[2J" (code-char 27)))
@@ -164,8 +169,13 @@
 
 ;;; INteractive Mode
 (defun read-cmd ()
-	(let ((c (read-char-no-hang)))
+	(let ((c (read-char-no-hang))) ;; Unfortunately we have to press enter after any cmd, because of terminal buf. Maybe go to ncurses soon
 		(when c
 			(cond
-				((equal #\a c) (move -1 0))))))
+				((equal #\a c) (move -0.1 0))
+				((equal #\w c) (move 0 -0.1))
+				((equal #\d c) (move 0.1 0))
+				((equal #\s c) (move 0 0.1))
+				((equal #\x c) (reset-move))
+				((equal #\q c) (quit))))))
 						
