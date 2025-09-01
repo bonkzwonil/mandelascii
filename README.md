@@ -3,9 +3,9 @@
 ## Usage
 start.sh [startpoint] [iter] [threads]
 
-startpoint -  a startpoint from the list of nice locations (below), or `list` for a list
-iter       -  max iterations (Default 1000)
-threads    -  number of Threads. (Default 10)
+- startpoint -  a startpoint from the list of nice locations (below), or `list` for a list
+- iter       -  max iterations (Default 1000)
+- threads    -  number of Threads. (Default 10)
 
 
 ## nice Startpoints
