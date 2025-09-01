@@ -91,7 +91,10 @@
 				(princ 	(z->ascii2 i))))
 		(princ #\Newline))
 	(home))
-	
+
+
+
+
 	
 
 (defun calc-viewport (r i w)
