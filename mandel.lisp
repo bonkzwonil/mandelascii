@@ -252,7 +252,7 @@
 ;;;
 ;; Around ~7 cycles per iter. not so bad.
 
-(defun benchmark (&optional (n 1000000))
+(defun benchmark (&optional (n 1000000)) ; 1 Million
 	(declare (type fixnum n))
 	(time (dotimes (i n)
 					(m4nde1-1t3r #c(0.1d0 -0.5d0) 1500))))

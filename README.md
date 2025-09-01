@@ -77,10 +77,29 @@ Rendering will stop as soon as there is only one color in the whole image or aft
 ## Benchmarks
 Currently we are at ~7 cpu cycles per iteration, which is quite acceptable. (depends on workload and pipelining)
 
+### Comparison
+This is really pretty fast.
+
+#### Python
+for comparison, running the same algorithm in vanilla python3 tooks ridiculous *235 seconds*, compared to 7.1 seconds for the Lisp version. (thats 33 times slower).
+
+Ok python is maybe the slowest imaginable language in existance known to mankind, so not the best comparison, but still surprisingly shitty performance from python.
+
+#### C
+- Its 35% faster than C, without cflags,
+
+- On par with `-O`.
+
+- almost 20% slower than C with `-O4` optimizations (70 to 59 seconds for 10 Million iterations)
+
+Disassembly looks pretty similar. Maybe running the benchmark function for lisp inside of slime inside of emacs had impact as well, but should be neglectible
+
 ## For ASCII we are pretty much done
 
 Currently rendering at 600fps in standard settings and normal terminal
 	and still getting 60fps in a 612x160 terminal (smallest font possible here with gnome-terminal and hack)
+	
+	
 	
 ## RGB Video rendering could need some more	
 
