@@ -3,6 +3,8 @@
 ## Usage
 start.sh [startpoint] [iter] [threads]
 
+This compiles and starts the ascii zoomer
+
 - startpoint -  a startpoint from the list of nice locations (below), or `list` for a list
 - iter       -  max iterations (Default 1000)
 - threads    -  number of Threads. (Default 10)
@@ -24,10 +26,10 @@ start.sh [startpoint] [iter] [threads]
 Some optimized algorithm, with a lot of `(declares)` .
 core calc loop is with double-precision floats instead of complex's.
 This increases the speed by factor 10.
-Another factor of 10 is achieved by parralel rendering with 10 Threads (on hardware with cores>=10)
+Another factor of 10 is achieved by parallel rendering with 10 Threads (on hardware with cores>=10)
 
 ## TODO
-Cuarrent Multiprocessing is starting n Threads per frame and joining them, which is working surprisingly good in sbcl, but could maybe be optimized longer lifecycle workers.
+Current Multiprocessing is starting n Threads per frame and joining them, which is working surprisingly good in sbcl, but could maybe be optimized longer lifecycle workers.
 
 ## GFX
 create a video with mencoder like this:
