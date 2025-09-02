@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 COLS=$(tput cols)
 LNS=$(tput lines)
-echo $?
 STARTP=$1
 ITER=$2
 DELAY=$3
@@ -11,6 +10,18 @@ then
 		sbcl --non-interactive --load mandel.lisp --eval "(progn (cls) (home))" --eval "(format t \"Try these nice Locations: ~%~%   ~{~a~^, ~}~%\" (mapcar #'car *mandel-travel-map*))" --noprint 2>/dev/null
 		exit;
 fi;
+
+if [ $STARTP == "random" ];
+then
+		STARTP=$(echo "spirals trunks starfish julia flower home seahorse sun tendrils"|tr ' ' '\n' |sort -R |head -1)
+fi;
+
+if [ $ITER == "random" ];
+then
+		ITER=$((1 + $RANDOM % 5000))
+fi;
+
+echo $STARTP $ITER $DELAY
 
 sbcl --non-interactive --eval "(compile-file #p\"mandel.lisp\")" \
 		 --eval "(compile-file #p\"threading.lisp\")" \
