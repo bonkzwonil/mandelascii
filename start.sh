@@ -13,6 +13,7 @@ then
 fi;
 
 sbcl --non-interactive --eval "(compile-file #p\"mandel.lisp\")" \
+		 --eval "(compile-file #p\"threading.lisp\")" \
 		 --load mandel.fasl \
 		 --load threading.fasl \
 		 --eval "(setf *delay* ${DELAY:=0})" \
