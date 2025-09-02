@@ -127,7 +127,35 @@ Put it in for fun :)
 
 COBOL can't crunch numbers. Period
 
-- COBOL performs `*150 times* SLOWER` than our Lisp.
+- COBOL performs almost `*150 times* SLOWER` than our Lispversion.
+
+#### Fortran  (and the Winner iiiiis...) lol
+Fortran beats them all, \o/
+
+- Fortran is a whopping `~17% faster` and even `7% faster` than `-O4 -ffast-math` C.
+
+Good Job, Fortran...
+
+If only you were a nice Language, too... :D
+
+## Conclusion
+C,Nodejs,Lisp and Fortran are all generating near optimum handwritten Assemblercode for the numbercrunching, utilizing SSE2 and unrolling loops etcpp.
+
+Python is slooow, and COBOL is not even suitable for this particular purpose :)
+
+Test Result Table (for 250 Million Iterations (50000*5000)):
+
+| Language    | Optimize Flags                                              |  Result |
+|:------------|:------------------------------------------------------------|--------:|
+| Common Lisp | declares in code                                            |   1.36s |
+| C           |                                                             |   1.92s |
+| C           | -O4 -ffast-math                                             |   1.10s |
+| Fortran     | -O3 -ffast-math -fopenmp -foffload=nvptx-none -march=native |   1.14s |
+| Python      |                                                             |  44.36s |
+| COBOL       | -fno-binary-truncate -fnotrunc -O2 -A -O4...                | 138.40s |
+| Nodejs      |                                                             |   1.13s |
+|:------------|:------------------------------------------------------------|--------:|
+|             |                                                             |         |
 
 ##### Comparison Scripts
 Report and some Scripts can be found in [compare Directory](./compare)  and [./compare/timing.txt](./compare/timing.txt).
@@ -212,10 +240,47 @@ Needs more work. Current performance is acceptable, but further SIMD(?) (MMX/SSE
 
 ```
 
+## Fortran Disassemly Comparison
+```
+mandel:
+.LFB2:
+	.cfi_startproc
+	xorl	%eax, %eax
+	testl	%edi, %edi
+	jle	.L21
+	pxor	%xmm5, %xmm5
+	movapd	%xmm5, %xmm4
+	movapd	%xmm5, %xmm3
+	movapd	%xmm5, %xmm2
+	jmp	.L19
+	.p2align 4,,10
+	.p2align 3
+.L24:
+	cmpl	%eax, %edi
+	jle	.L18
+.L19:
+	mulsd	%xmm4, %xmm2
+	subsd	%xmm5, %xmm3
+	addl	$1, %eax
+	addsd	%xmm0, %xmm3
+	addsd	%xmm2, %xmm2
+	movapd	%xmm2, %xmm4
+	movapd	%xmm3, %xmm2
+	addsd	%xmm1, %xmm4
+	mulsd	%xmm3, %xmm3
+	movapd	%xmm4, %xmm5
+	mulsd	%xmm4, %xmm5
+	movapd	%xmm3, %xmm6
+	addsd	%xmm5, %xmm6
+	comisd	.LC5(%rip), %xmm6
+	jb	.L24
+```
 # Conclusion
 Common Lisp once again proves itself as a true high-level language that combines expressive power with strong computational performance. Unlike C, which demands boilerplate code, manual memory handling, and repeated compilation, Lisp provides an interactive REPL and concise abstractions that enable rapid iteration and much faster development cycles.
 
 At the same time, careful use of declarations, efficient compilation, and parallel execution allow compute-intensive workloads to reach — and sometimes rival — optimized C. This blend of high productivity and serious performance shows that Common Lisp is the practical and powerful choice for tasks requiring both rapid, fluid development and demanding numerical computation.
+
+We are getting impressive machine code, which could not be much further optimized by handwriting it, utilizing SIMD SSE/SSE2, all without any headaches...
 
 In short:
 Common Lisp isn’t just elegant — it’s *fast*, *practical*, and *fun*.

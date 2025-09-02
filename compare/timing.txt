@@ -1,19 +1,19 @@
 Nodejs
 	Command being timed: "node node.js"
-	User time (seconds): 2.25
-	System time (seconds): 0.03
+	User time (seconds): 1.11
+	System time (seconds): 0.01
 	Percent of CPU this job got: 100%
-	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:02.26
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:01.12
 	Average shared text size (kbytes): 0
 	Average unshared data size (kbytes): 0
 	Average stack size (kbytes): 0
 	Average total size (kbytes): 0
-	Maximum resident set size (kbytes): 45696
+	Maximum resident set size (kbytes): 45800
 	Average resident set size (kbytes): 0
 	Major (requiring I/O) page faults: 0
-	Minor (reclaiming a frame) page faults: 2810
-	Voluntary context switches: 31
-	Involuntary context switches: 28
+	Minor (reclaiming a frame) page faults: 2791
+	Voluntary context switches: 33
+	Involuntary context switches: 10
 	Swaps: 0
 	File system inputs: 0
 	File system outputs: 0
@@ -31,18 +31,18 @@ It is mostly in the public domain; some portions are provided under
 BSD-style licenses.  See the CREDITS and COPYING files in the
 distribution for more information.
 Evaluation took:
-  2.766 seconds of real time
-  2.762796 seconds of total run time (2.761345 user, 0.001451 system)
-  99.89% CPU
-  4,143,275,073 processor cycles
+  1.387 seconds of real time
+  1.387022 seconds of total run time (1.386989 user, 0.000033 system)
+  100.00% CPU
+  2,077,867,759 processor cycles
   0 bytes consed
   
 C
 	Command being timed: "./a.out"
-	User time (seconds): 3.84
+	User time (seconds): 1.90
 	System time (seconds): 0.00
 	Percent of CPU this job got: 99%
-	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:03.85
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:01.90
 	Average shared text size (kbytes): 0
 	Average unshared data size (kbytes): 0
 	Average stack size (kbytes): 0
@@ -50,9 +50,9 @@ C
 	Maximum resident set size (kbytes): 1536
 	Average resident set size (kbytes): 0
 	Major (requiring I/O) page faults: 0
-	Minor (reclaiming a frame) page faults: 76
+	Minor (reclaiming a frame) page faults: 75
 	Voluntary context switches: 1
-	Involuntary context switches: 189
+	Involuntary context switches: 82
 	Swaps: 0
 	File system inputs: 0
 	File system outputs: 0
@@ -63,10 +63,10 @@ C
 	Exit status: 0
 C -O
 	Command being timed: "./ao.out"
-	User time (seconds): 2.24
+	User time (seconds): 1.10
 	System time (seconds): 0.00
 	Percent of CPU this job got: 99%
-	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:02.24
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:01.10
 	Average shared text size (kbytes): 0
 	Average unshared data size (kbytes): 0
 	Average stack size (kbytes): 0
@@ -74,9 +74,9 @@ C -O
 	Maximum resident set size (kbytes): 1536
 	Average resident set size (kbytes): 0
 	Major (requiring I/O) page faults: 0
-	Minor (reclaiming a frame) page faults: 77
+	Minor (reclaiming a frame) page faults: 75
 	Voluntary context switches: 1
-	Involuntary context switches: 119
+	Involuntary context switches: 9
 	Swaps: 0
 	File system inputs: 0
 	File system outputs: 0
@@ -87,10 +87,10 @@ C -O
 	Exit status: 0
 C -O4
 	Command being timed: "./a4.out"
-	User time (seconds): 2.32
+	User time (seconds): 1.15
 	System time (seconds): 0.00
 	Percent of CPU this job got: 99%
-	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:02.33
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:01.15
 	Average shared text size (kbytes): 0
 	Average unshared data size (kbytes): 0
 	Average stack size (kbytes): 0
@@ -100,7 +100,7 @@ C -O4
 	Major (requiring I/O) page faults: 0
 	Minor (reclaiming a frame) page faults: 75
 	Voluntary context switches: 1
-	Involuntary context switches: 39
+	Involuntary context switches: 62
 	Swaps: 0
 	File system inputs: 0
 	File system outputs: 0
@@ -109,22 +109,46 @@ C -O4
 	Signals delivered: 0
 	Page size (bytes): 4096
 	Exit status: 0
-and the sucker Python
+Fortran
+	Command being timed: "./fortran"
+	User time (seconds): 1.14
+	System time (seconds): 0.00
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:01.14
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 2816
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 116
+	Voluntary context switches: 1
+	Involuntary context switches: 46
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+poor python
 	Command being timed: "python3 python.py"
-	User time (seconds): 114.65
-	System time (seconds): 0.07
+	User time (seconds): 43.76
+	System time (seconds): 0.01
 	Percent of CPU this job got: 99%
-	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:55.00
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:43.81
 	Average shared text size (kbytes): 0
 	Average unshared data size (kbytes): 0
 	Average stack size (kbytes): 0
 	Average total size (kbytes): 0
-	Maximum resident set size (kbytes): 9344
+	Maximum resident set size (kbytes): 9472
 	Average resident set size (kbytes): 0
 	Major (requiring I/O) page faults: 0
-	Minor (reclaiming a frame) page faults: 987
+	Minor (reclaiming a frame) page faults: 992
 	Voluntary context switches: 1
-	Involuntary context switches: 2661
+	Involuntary context switches: 1042
 	Swaps: 0
 	File system inputs: 0
 	File system outputs: 0
@@ -133,22 +157,22 @@ and the sucker Python
 	Signals delivered: 0
 	Page size (bytes): 4096
 	Exit status: 0
-AND COBOL, LOL
+AND COBOL, LOL takes a looong time, (be warned)
 	Command being timed: "./cobol"
-	User time (seconds): 399.21
-	System time (seconds): 0.50
+	User time (seconds): 138.40
+	System time (seconds): 0.03
 	Percent of CPU this job got: 99%
-	Elapsed (wall clock) time (h:mm:ss or m:ss): 6:42.58
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:18.48
 	Average shared text size (kbytes): 0
 	Average unshared data size (kbytes): 0
 	Average stack size (kbytes): 0
 	Average total size (kbytes): 0
-	Maximum resident set size (kbytes): 6912
+	Maximum resident set size (kbytes): 6656
 	Average resident set size (kbytes): 0
 	Major (requiring I/O) page faults: 0
-	Minor (reclaiming a frame) page faults: 301
-	Voluntary context switches: 1
-	Involuntary context switches: 14658
+	Minor (reclaiming a frame) page faults: 299
+	Voluntary context switches: 2
+	Involuntary context switches: 2166
 	Swaps: 0
 	File system inputs: 0
 	File system outputs: 0
