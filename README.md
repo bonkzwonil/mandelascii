@@ -130,7 +130,7 @@ COBOL can't crunch numbers. Period
 - COBOL performs `*150 times* SLOWER` than our Lisp.
 
 ##### Comparison Scripts
-Report and some Scripts can be found in [[compare]] and [[compare/timings.txt]].
+Report and some Scripts can be found in <compare>  and <compare/timings.txt>.
 
 
 ## ASCII Rendering
