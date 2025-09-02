@@ -154,8 +154,6 @@ Test Result Table (for 250 Million Iterations (50000*5000)):
 | Python      |                                                             |  44.36s |
 | COBOL       | -fno-binary-truncate -fnotrunc -O2 -A -O4...                | 138.40s |
 | Nodejs      |                                                             |   1.13s |
-|:------------|:------------------------------------------------------------|--------:|
-|             |                                                             |         |
 
 ##### Comparison Scripts
 Report and some Scripts can be found in [compare Directory](./compare)  and [./compare/timing.txt](./compare/timing.txt).
