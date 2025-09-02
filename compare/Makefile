@@ -10,26 +10,40 @@ a4.out:
 bench.fasl:
 	sbcl --non-interactive --eval "(compile-file \"bench.lisp\")"
 
-.PHONY compile: a.out bench.fasl a4.out ao.out
+cobol:
+	cobc  --std=ibm -Wall -v -fno-binary-truncate -fnotrunc -O2 -A "-O3 -ffast-math -fomit-frame-pointer " -x cobol.cob
 
-all: compile
-	@echo Nodejs
-	time node node.js
-	@echo Common Lisp
-	time sbcl --non-interactive --load bench.fasl --eval "(benchmark)"
-	@echo C
-	time ./a.out
-	@echo C -O
-	time ./ao.out
-	@echo C -O4
-	time ./a4.out
+.PHONY compile: a.out bench.fasl a4.out ao.out cobol
+
+
+
+run: compile
+	echo Nodejs | tee > timing.txt
+	time -v -o timing.tmp node node.js
+	cat timing.tmp | tee>> timing.txt
+	echo Common Lisp | tee >> timing.txt
+	time -v -o timing.tmp sbcl --non-interactive --load bench.fasl --eval "(benchmark)" |tee >>timing.txt
+	echo C| tee >> timing.txt
+	time -v -o timing.tmp ./a.out
+	cat timing.tmp | tee>> timing.txt
+	echo C -O| tee >> timing.txt
+	time -v -o timing.tmp ./ao.out
+	cat timing.tmp | tee>> timing.txt
+	echo C -O4| tee >> timing.txt
+	time -v -o timing.tmp ./a4.out
+	cat timing.tmp | tee>> timing.txt
 #slowest bastard last
-	@echo and the sucker
-	time python3 python.py
-
+	echo and the sucker Python | tee >> timing.txt
+	time -v -o timing.tmp python3 python.py
+	cat timing.tmp | tee>> timing.txt
+	echo AND COBOL, LOL | tee >> timing.txt
+	time -v -o timing.tmp ./cobol
+	cat timing.tmp | tee>> timing.txt
+	rm timing.tmp
+	cat timing.txt
 
 clean:
-	@rm *.out bench.fasl
+	@rm *.out bench.fasl *.o cobol *.i perf.* timing.* *.s 
 
 
 

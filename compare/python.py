@@ -22,5 +22,5 @@ def benchmark (n):
 
 
 
-benchmark(1000000)		
+benchmark(50000)		
 

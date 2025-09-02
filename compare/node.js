@@ -30,5 +30,5 @@ function benchmark ( n){
 
 let r = mandel(0.1,-0.5,5000);
 console.log(r.c + " " +r.ci +" "+r.i );
-	r = benchmark(1000000);
+	r = benchmark(50000);
 console.log(r.c + " " +r.ci +" "+r.i );

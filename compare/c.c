@@ -38,7 +38,7 @@ int main(){
 	Result *r = malloc(sizeof(Result));
 	mandel(0.1,-0.5,5000,r);
 	printf("%f %f %d\n", r->c, r->ci, r->i); 
-	r = benchmark(1000000);
+	r = benchmark(50000);
 	printf("%f %f %d\n", r->c, r->ci, r->i); 
 	free(r);
 }

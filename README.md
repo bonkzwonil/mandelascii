@@ -43,9 +43,13 @@ You can also exit at any time by pressing q + Enter.
 On a fast machine, try:
 
 ```
-start.sh sun 300 20
+./start.sh sun 300 20
 ```
 
+or something like this, on a slower one:   (thats actually a nice long ride)
+```
+./start.sh flower 200
+```
 ## nice Startpoints
 
 - spirals
@@ -66,6 +70,16 @@ Core calculation loop uses double-precision floats instead of Lisp complex numbe
 
 Parallel rendering with 10+ threads adds another ~10× boost (on hardware with ≥10 cores).
 
+### Multithreading
+Its such a joy in Lisp.
+
+Just segment your iterators and mapcar your Thread starting function on them :)
+
+Fire&Forget
+
+
+Such a beautiful language
+
 ## TODO
 Currently, multiprocessing spawns n threads per frame and joins them again. Surprisingly efficient in SBCL, but could be improved with longer-lived worker threads.
 
@@ -78,6 +92,8 @@ Rendering will stop as soon as there is only one color in the whole image or aft
 ### Encode
 `mencoder mf://image*.png -mf fps=25 -ovc x264 -oac copy -o output.avi`
 
+### makevideo
+There is also a sample script `makevideo.sh` for movie creation
 
 # Performance & Optimization
 
@@ -86,20 +102,36 @@ Currently around *~7 cpu cycles per iteration*, which is quite acceptable. (depe
 
 ### Language Comparison
 
+Note: This is just the core iteration loop. 
+
 #### Python
-Running the same algorithm in plain Python 3 takes a ridiculous 235 seconds, compared to 7.1 seconds in Lisp.
-That’s ~33× slower.
+Running the same algorithm in plain Python 3 takes a ridiculous 114 seconds, compared to 2.7 seconds in Lisp.
+That’s `~42 times slower`.
 
 Python might not be the fairest benchmark (being one of the slowest mainstream languages ever), but the performance gap is still striking.
 
 #### C
-- 25% faster than C, without cflags
+- `30% faster` than C, without cflags
 
 - On par with `-O`.
 
-- almost 20% slower than C with `-O4` optimizations (70 to 59 seconds for 15 Billion iterations)
+- `~15% slower` than C with `-O4` optimizations 
 
-Disassembly looks quite similar.  Running Lisp inside SLIME/Emacs may have added a negligible overhead.
+Disassembly looks quite similar.  Really nice SIMD Usage. Running Lisp inside SLIME/Emacs may have added a negligible overhead.
+
+#### Node.js
+Node is surprisingly fast and equals Optimized C.
+
+#### COBOL   (Gnucobol)
+Put it in for fun :)
+
+COBOL can't crunch numbers. Period
+
+- COBOL performs `*150 times* SLOWER` than our Lisp.
+
+##### Comparison Scripts
+Report and some Scripts can be found in [[compare]] and [[compare/timings.txt]].
+
 
 ## ASCII Rendering
 ~600 fps with default settings in a standard terminal. -> Should be enough :)

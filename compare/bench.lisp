@@ -1,6 +1,6 @@
 
 ;; seperated core iter for language comparison
-(defparameter *iterations* 300)
+(defparameter *iterations* 5000)
 
 (declaim (type fixnum *iterations*)
 				 (optimize (speed 3) (safety 0)))
@@ -29,7 +29,7 @@
 						 (incf i))
 		(values c ci i)))
 
-(defun benchmark (&optional (n 1000000)) ; 1 Million
+(defun benchmark (&optional (n 50000)) 
 	(declare (type fixnum n))
 	(time (dotimes (i n)
 					(m4nde1-1t3r 0.1d0 -0.5d0 5000))))

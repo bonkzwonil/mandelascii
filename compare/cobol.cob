@@ -2,15 +2,15 @@
         PROGRAM-ID. HALLOPGM.
         DATA DIVISION.
         WORKING-STORAGE SECTION.
-        77  C   PIC SV9(07) COMP.
-        77  CI  PIC SV9(07) COMP.
-        77  C2  PIC V9(07) COMP.
-        77  CI2 PIC V9(07) COMP.
-        77  ZWI PIC V9(07) COMP.
-        77  I   PIC 9(7)   COMP.
-        77  BI   PIC 9(8)   COMP.
-        77  X   PIC SV9(07)   COMP.
-        77  Y   PIC SV9(07)   COMP.
+        77  C   PIC SV9(07) COMP-5.
+        77  CI  PIC SV9(07) COMP-5.
+        77  C2  PIC V9(07) COMP-5.
+        77  CI2 PIC V9(07) COMP-5.
+        77  ZWI PIC V9(07) COMP-5.
+        77  I   PIC 9(7)   COMP-5.
+        77  BI   PIC 9(8)   COMP-5.
+        77  X   PIC SV9(07)   COMP-5.
+        77  Y   PIC SV9(07)   COMP-5.
         77  MAXI PIC 9(5) VALUE 5000.
         PROCEDURE DIVISION.
         P-START.
@@ -37,7 +37,7 @@
             ADD C2 TO CI2 GIVING ZWI.
         P-BENCHMARK.
             PERFORM P-MANDEL VARYING BI FROM 1 BY 1
-                    UNTIL BI GREATER THAN 1000.
+                    UNTIL BI GREATER THAN 50000.
         P-END.
             DISPLAY "The ENd"
             STOP RUN.
