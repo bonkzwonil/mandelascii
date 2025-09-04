@@ -17,7 +17,7 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Install deps
-      run: apt install sbcl gfortran gnucobol gcc
+      run: sudo apt install sbcl gfortran gnucobol gcc
       
     - name: Run speedtests
       run: cd compare && make
